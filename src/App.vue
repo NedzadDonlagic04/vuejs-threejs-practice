@@ -1,5 +1,5 @@
 <script setup>
-    import { MeshBasicMaterial, BoxGeometry, WebGLRenderer, PerspectiveCamera, Scene, Mesh, CameraHelper, AxesHelper, PointLight, MeshStandardMaterial } from 'three';
+    import { BoxGeometry, WebGLRenderer, PerspectiveCamera, Scene, Mesh, PointLight, MeshStandardMaterial } from 'three';
     import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
     import { ref, onMounted } from 'vue';
 
@@ -12,6 +12,7 @@
     scene.add(camera);
 
     // Used for testing
+    // IMPORTANT: Remember to import the components before using code below
     /*  
     const cameraHelper = new CameraHelper(camera);
     scene.add(cameraHelper);
@@ -67,6 +68,14 @@
 
 <template>
     <canvas id="myCanvas" ref="myCanvas"></canvas>
+    <nav class="navbar">
+        <a href="#">Cube</a>
+        <ul>
+            <li>Explore</li>
+            <li>Create</li>
+        </ul>
+    </nav>
+    <h1 class="title">Give it a spin...</h1>
 </template>
 
 <style scoped>
@@ -74,5 +83,50 @@
         position: fixed;
         inset: 0;
         height: 100%;
+        z-index: 1;
+    }
+
+    .navbar {
+        color: var(--text-color);
+        z-index: 2;
+        position: relative;
+        padding: 4rem 8rem;
+        display: flex;
+        justify-content: space-between;
+        transition: all .3s ease;
+    }
+
+    .navbar > a {
+        text-decoration: none;
+        font-weight: bold;
+        color: var(--text-color);
+        font-size: 2.5rem;
+    }
+
+    .navbar > ul {
+        list-style: none;
+        display: flex;
+        align-items: center;
+        gap: 4rem;
+    }
+
+    .navbar > ul > li {
+        cursor: pointer;
+        font-size: 1.3rem;
+    }
+
+    .navbar > ul > li:hover {
+        border-bottom: 1px solid var(--text-color);
+        padding-bottom: .1rem;
+    }
+
+    .title {
+        color: var(--text-color);
+        font-size: 3rem;
+        z-index: 2;
+        position: absolute;
+        top: 80%;
+        left: 50%;
+        transform: translate(-50%, -80%);
     }
 </style>
