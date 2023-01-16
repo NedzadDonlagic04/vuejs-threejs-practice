@@ -1,8 +1,10 @@
 <script setup>
-    import { BoxGeometry, WebGLRenderer, PerspectiveCamera, Scene, Mesh, PointLight, MeshStandardMaterial } from 'three';
+    import { BoxGeometry, WebGLRenderer, PerspectiveCamera, Scene, Mesh, PointLight, MeshStandardMaterial, Color } from 'three';
     import { ref, onMounted } from 'vue';
 
     const myCanvas = ref(null);
+
+    const mouseClickState = ref(false);
     
     const scene = new Scene();
 
@@ -20,9 +22,13 @@
     scene.add(axesHelper); 
     */
 
-    const light = new PointLight(0xffffff, 1, 100);
-    light.position.set(0, 5, 5);
-    scene.add(light);
+    const light1 = new PointLight(0xffffff, 1, 100);
+    light1.position.set(5, 5, 5);
+    scene.add(light1);
+
+    const light2 = new PointLight(0xffffff, 1, 100);
+    light2.position.set(-5, 5, 5);
+    scene.add(light2);
 
     const cubeGeometry = new BoxGeometry(1, 1, 1);
 	const cubeMaterial = new MeshStandardMaterial({ color: 0x00ff83 });
@@ -78,6 +84,26 @@
         tl.fromTo(cube.scale, { x: 0, y: 0, z: 0 }, { x: 1, y: 1, z: 1 });
         tl.fromTo('.navbar', { y: "-100%" }, { y:"0%" });
         tl.fromTo('.title', { opacity: 0 }, { opacity: 1 });
+
+        window.addEventListener('mousedown', () => mouseClickState.value = true);
+        window.addEventListener('mouseup', () => mouseClickState.value = false);
+        window.addEventListener('mousemove', e => {
+            if(mouseClickState.value) {
+                const rgb = [
+                    Math.round(e.pageX / window.innerWidth * 255),
+                    Math.round(e.pageY / window.innerHeight * 255),
+                    150
+                ];
+
+                const newColor = new Color(`rgb(${rgb.join(',')})`);
+
+                gsap.to(cube.material.color, {
+                    r: newColor.r,
+                    g: newColor.g,
+                    b: newColor.b
+                });
+            }
+        });
     });
 </script>
 
