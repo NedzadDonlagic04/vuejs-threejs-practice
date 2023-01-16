@@ -1,6 +1,7 @@
 <script setup>
     import { BoxGeometry, WebGLRenderer, PerspectiveCamera, Scene, Mesh, PointLight, MeshStandardMaterial } from 'three';
     import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+    import gsap from 'gsap';
     import { ref, onMounted } from 'vue';
 
     const myCanvas = ref(null);
@@ -63,6 +64,14 @@
         animateScene();
 
         window.addEventListener('resize', updateOnResize);
+
+        const tl = gsap.timeline({
+            defaults: { duration: 1 }
+        });
+
+        tl.fromTo(cube.scale, { x: 0, y: 0, z: 0 }, { x: 1, y: 1, z: 1 });
+        tl.fromTo('.navbar', { y: "-100%" }, { y:"0%" });
+        tl.fromTo('.title', { opacity: 0 }, { opacity: 1 });
     });
 </script>
 
@@ -93,7 +102,7 @@
         padding: 4rem 8rem;
         display: flex;
         justify-content: space-between;
-        transition: all .3s ease;
+        transition: border padding .3s ease;
     }
 
     @media screen and (max-width: 720px) {
