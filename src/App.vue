@@ -96,6 +96,14 @@
         transition: all .3s ease;
     }
 
+    @media screen and (max-width: 720px) {
+        .navbar {
+            flex-direction: column;
+            align-items: center;
+            gap: .5rem
+        }
+    }
+
     .navbar > a {
         text-decoration: none;
         font-weight: bold;
