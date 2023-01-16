@@ -1,7 +1,5 @@
 <script setup>
     import { BoxGeometry, WebGLRenderer, PerspectiveCamera, Scene, Mesh, PointLight, MeshStandardMaterial } from 'three';
-    import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-    import gsap from 'gsap';
     import { ref, onMounted } from 'vue';
 
     const myCanvas = ref(null);
@@ -47,12 +45,16 @@
         renderer.render(scene, camera);
     }
 
-    onMounted(() => {
+    onMounted(async () => {
         renderer = new WebGLRenderer({
             canvas: myCanvas.value,
             antialias: true
         });
         renderer.setSize(window.innerWidth, window.innerHeight);
+
+        // Dynamic import for the OrbitControls class
+        // Since it should be used only after everything else has been loaded in
+        const { OrbitControls } = await import('three/examples/jsm/controls/OrbitControls');
 
         controls = new OrbitControls(camera, renderer.domElement);
         controls.enableDamping = true;
@@ -64,6 +66,10 @@
         animateScene();
 
         window.addEventListener('resize', updateOnResize);
+
+        // Dynamic import for the gsap object
+        // Used to animate parts of the page
+        const { gsap } = await import('gsap');
 
         const tl = gsap.timeline({
             defaults: { duration: 1 }
