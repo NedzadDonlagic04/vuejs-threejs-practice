@@ -1,5 +1,5 @@
 <script setup>
-    import { MeshBasicMaterial, BoxGeometry, WebGLRenderer, PerspectiveCamera, Scene, Mesh, CameraHelper, AxesHelper } from 'three';
+    import { MeshBasicMaterial, BoxGeometry, WebGLRenderer, PerspectiveCamera, Scene, Mesh, CameraHelper, AxesHelper, PointLight, MeshStandardMaterial } from 'three';
     import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
     import { ref, onMounted } from 'vue';
 
@@ -7,8 +7,8 @@
     
     const scene = new Scene();
 
-    const camera = new PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.z = 5;
+    const camera = new PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.set(5, 5, 3);
     scene.add(camera);
 
     const cameraHelper = new CameraHelper(camera);
@@ -17,15 +17,20 @@
     const axesHelper = new AxesHelper(5);
     scene.add(axesHelper);
 
-    const geometry = new BoxGeometry(1, 1, 1);
-	const material = new MeshBasicMaterial({ color: 0x008080 });
-	const cube = new Mesh(geometry, material);
+    const light = new PointLight(0xffffff, 1, 100);
+    light.position.set(0, 5, 5);
+    scene.add(light);
+
+    const cubeGeometry = new BoxGeometry(1, 1, 1);
+	const cubeMaterial = new MeshStandardMaterial({ color: 0x008080 });
+	const cube = new Mesh(cubeGeometry, cubeMaterial);
 	scene.add(cube);
 
     let renderer, controls;
 
     const updateOnResize = () => {
         camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
     }
 
@@ -45,6 +50,9 @@
         renderer.setSize(window.innerWidth, window.innerHeight);
 
         controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.enablePan = false;
+        controls.enableZoom = false;
 
         animateScene();
 
